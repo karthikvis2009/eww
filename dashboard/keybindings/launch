@@ -1,0 +1,13 @@
+#!/bin/bash
+
+CONFIG="$HOME/.config/eww/keybindings"
+
+file=$(cat $HOME/.config/suckless/dwm/config.h | grep -E "\s*{\s*(.*?),\s*(.*?),.*\/(.*)")
+
+echo $file
+
+# if [[ ! $(eww --config "$CONFIG" active-windows) ]]; then
+#     eww --config "$CONFIG" open keybindings
+# else
+#     eww --config "$CONFIG" close keybindings
+# fi

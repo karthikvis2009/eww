@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ "$1" = "calendar" ]; then
+    if [ -z "$(pgrep calcurse)" ]; then 
+        kitty --title calcurse -e calcurse
+    else 
+        pkill calcurse
+    fi
+fi

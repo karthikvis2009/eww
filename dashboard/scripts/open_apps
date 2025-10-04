@@ -1,0 +1,14 @@
+#!/bin/bash
+
+case "$1" in
+    "--fm") eww close-all && thunar ~ &;;
+    "--fc") eww close-all && freecad &;;
+    "--pv") eww close-all && paraview &;;
+    "--bl") eww close-all && blender &;;
+    "--zo") eww close-all && zotero &;;
+    "--dc") eww close-all && discord &;;
+    "--gp") eww close-all && gimp &;;
+    "--tb") eww close-all && thunderbird &;;
+    "--br") eww close-all && brave &;;
+    "--kt") eww close-all && kitty &;;
+esac

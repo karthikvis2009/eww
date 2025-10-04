@@ -1,0 +1,474 @@
+/** Global *******************************************/
+*{
+	all: unset;
+	/* font-family: feather; */
+	/* font-family: Iosevka; */
+}
+
+/** Background ***************************************/
+.bg {
+	background-image: url("images/bg.png");
+	background-color: #474D59;
+	opacity: 1;
+}
+
+/** Generic window ***********************************/
+.genwin {
+	background-color: #2E3440;
+	border-radius: 16px;
+}
+
+/** Profile ******************************************/
+.face {
+	background-size: 200px;
+	min-height: 200px;
+	min-width: 200px;
+	margin: 65px 0px 0px 0px;
+	border-radius: 100%;
+}
+
+.fullname {
+	color: #D46389;
+	font-size : 28px;
+	font-weight : bold;
+}
+
+.username {
+	color: #8FBCBB;
+	font-size : 28px;
+	font-weight : bold;
+	margin : -15px 0px 0px 0px;
+}
+
+/** System ********************************************/
+.iconcpu, .iconmem, .iconbright, .iconbat {
+	font-size : 32px;
+	font-weight : normal;
+}
+.iconcpu {
+	color: #BF616A;
+}
+.iconmem {
+	color: #A3BE8C;
+}
+.iconbright {
+	color: #EBCB8B;
+    margin: 0px -5px 0px 0px;
+}
+.iconbat {
+	color: #88C0D0;
+}
+
+.cpu_bar, .mem_bar, .bright_bar, .bat_bar, scale trough {
+	all: unset;
+	background-color: #3A404C;
+	border-radius: 10px;
+	min-height: 22px;
+	min-width: 240px;
+}
+
+.cpu_bar, .mem_bar, .bright_bar, .bat_bar, scale trough highlight {
+	all: unset;
+	border-radius: 10px;
+}
+
+.cpu_bar scale trough highlight {
+	background-color: #BF616A;
+}
+.mem_bar scale trough highlight {
+	background-color: #A3BE8C;
+}
+.bright_bar scale trough highlight {
+	background-color: #EBCB8B;
+}
+.bat_bar scale trough highlight {
+	background-color: #88C0D0;
+}
+
+/** Clock ********************************************/
+.time_hour, .time_min {
+	color: #81A1C1;
+	font-size : 64px;
+	font-weight : bold;
+}
+.time_hour {
+	margin : 15px 0px 0px 20px;
+}
+.time_min {
+	margin : 0px 0px 10px 0px;
+}
+
+.time_mer {
+	color: #A3BE8C;
+	font-size : 36px;
+	font-weight : bold;
+	margin : 20px 0px 0px 0px;
+}
+
+.time_day {
+	color: #EBCB8B;
+	font-size : 22px;
+	font-weight : bold;
+	margin : 0px 0px 20px -20px;
+}
+
+/** Uptime ********************************************/
+.icontimer {
+	color: #B48EAD;
+	font-size : 90px;
+	font-weight : normal;
+}
+
+.uphour {
+	color: #E5E9F0;
+	font-size : 24px;
+	font-weight : bold;
+}
+
+.upmin {
+	color: #E5E9F0;
+	font-size : 24px;
+	font-weight : bold;
+}
+
+/** Music ***************************************/
+.album_art {
+	background-size: 240px;
+	min-height: 240px;
+	min-width: 240px;
+	margin: 20px;
+	border-radius: 14px;
+}
+
+.song {
+	color: #8FBCBB;
+	font-size : 24px;
+	font-weight : bold;
+	margin : 40px 0px 0px 0px;
+}
+
+.artist {
+	color: #EBCB8B;
+	font-size : 16px;
+	font-weight : normal;
+	margin : 0px 0px 15px 0px;
+}
+
+/** Music ***************************************/
+.volIcon {
+    color: #EBCB8B;
+    font-size: 38px;
+    margin: 0px 10px 0px 5px;
+    min-width: 100px;
+    margin: 20px 20px 20px 20px;
+    border-radius: 10px;
+	background-color: #3A404C;
+    border: 2px solid #3A404C;
+}
+
+.volIcon:hover{
+    border: 2px solid #EBCB8B;
+}
+
+.volScale trough highlight{
+    background-color: #8DBCBB;
+    border-radius: 5px;
+}
+
+.volScale trough{
+  all: unset;
+  background-color: #3A404C;
+  border-radius: 5px;
+  min-height: 20px;
+  min-width: 350px;
+  margin: 0px 10px 0px 5px;
+}
+
+.pavuIcon, .btIcon, .wifiIcon, .sysIcon {
+    font-family: JetBrainsMono NF;
+    font-size: 32px;
+    background-color: #3A404C;
+    margin : 15px 20px 15px 20px;
+    border-radius: 10px;
+}
+
+.pavuIcon {
+    color: #B48EAD;
+    border: 2px solid #3A404C;
+    padding: 0px 10px 0px 0px;
+}
+.btIcon {
+	color: #88C0D0;
+    border: 2px solid #3A404C;
+}
+
+.wifiIcon {
+	color: #A3BE8C;
+    border: 2px solid #3A404C;
+    padding: 0px 5px 0px 0px;
+}
+
+.sysIcon {
+	color: #BF616A;
+    border: 2px solid #3A404C;
+    padding: 0px 10px 0px 0px;
+}
+
+.pavuIcon:hover {
+    border: 2px solid #B48EAD;
+}
+
+.btIcon:hover {
+    border: 2px solid #88C0D0;
+}
+
+.wifiIcon:hover {
+    border: 2px solid #A3BE8C;
+}
+
+.sysIcon:hover {
+    border: 2px solid #BF616A;
+}
+
+/** Calendar  ***************************************/
+calendar {
+    font-family: JetBrainsMono NF;
+    font-size: 22px;
+	background-color: #2E3440;
+	border-radius: 16px;
+	color: #B48EAD;
+}
+calendar.header {
+    font-size: 18px;
+    font-weight: bold;
+    color: #EBCB8B; /* Yellow */
+}
+calendar.highlight {
+    color: #A3BE8C; /* Green */
+}
+
+calendar:selected{
+	color: #BF616A;
+    background-color: #3A404C;
+    margin: 10px 5px 0px 10px;
+    border-radius: 16px;
+}
+
+
+
+/** Applications ***************************************/
+.appbox {
+	margin : 15px 0px 0px 25px;
+}
+
+.app_freecad, .app_paraview, .app_blender, .app_zotero,
+.app_discord, .app_gimp, .app_thunderbird, .app_brave, .app_kitty {
+    background-repeat: no-repeat;
+	background-size: 64px;
+	min-height: 64px;
+	min-width: 64px;
+	margin: 8px 8px 0px 8px;
+    font-family: JetBrainsMono NF;
+    font-size: 48px;
+    transition: font-size 0.3s;
+}
+
+.app_freecad:hover, .app_paraview:hover, .app_blender:hover, .app_zotero:hover,
+.app_discord:hover, .app_gimp:hover, .app_thunderbird:hover, .app_brave:hover, .app_kitty :hover{
+    font-size: 56px;
+}
+.app_freecad{
+    color: #FF585D;
+}
+.app_paraview{
+    color: #007ACC;
+}
+.app_blender{
+    color: #E87D0D;
+}
+.app_zotero{
+    color: #CC2936;
+}
+.app_discord{
+    color: #5865F2;
+}
+.app_gimp{
+    color: #514C3C;
+}
+.app_thunderbird{
+    color: #00539F;
+}
+
+.app_brave{
+    color: #FB542B;
+}
+
+.app_kitty{
+    color: #121212;
+}
+
+/** Links ***************************************/
+.iconweb, .iconmail {
+	color: #FFFFFF;
+	/* font-family: Iosevka Nerd Font; */
+    font-family: JetBrainsMono NF;
+	font-size : 70px;
+	font-weight : normal;
+    transition: font-size 0.3s;
+}
+.iconweb:hover{
+	font-size : 76px;
+}
+
+.iconmail {
+	color: #DF584E;
+}
+
+.github {
+	background-color: #24292E;
+	border-radius: 16px;
+    padding: 0px 20px 0px 0px;
+}
+.chatgpt {
+    background-color: #74AA9C;
+	border-radius: 16px;
+}
+.gscholar {
+	background-color: #2F68AC;
+	border-radius: 16px;
+}
+.youtube {
+	background-color: #FF0000;
+	border-radius: 16px;
+    padding: 0px 20px 0px 0px;
+}
+.gmail {
+	border-radius: 16px;
+    background-image: linear-gradient(to bottom, #4285F4 , #BB001B , #EA4335 , #FBBC05 ,  #34A853);
+    padding: 0px 10px 0px 0px;
+}
+
+.ddg {
+	background-color: #E37151;
+	border-radius: 16px;
+}
+
+.arch {
+	background-color: #1793d1;
+	border-radius: 16px;
+    padding: 0px 10px 0px 0px;
+}
+
+/** Power buttons ***************************************/
+
+.btn_logout, .btn_lock, .btn_reboot, .btn_poweroff {
+	font-size : 48px;
+	font-weight : bold;
+    transition: font-size 0.3s;
+}
+
+.btn_logout {
+	color: #BF616A;
+}
+
+.btn_lock {
+	color: #A3BE8C;
+    margin: 0px 0px 0px 20px;
+}
+.btn_reboot {
+	color: #EBCB8B;
+    margin: 0px 0px 0px 20px;
+}
+.btn_poweroff {
+	color: #88C0D0;
+    margin: 0px 0px 0px 10px;
+}
+
+.btn_poweroff:hover, .btn_logout:hover, .btn_lock:hover, .btn_reboot:hover{
+    font-size: 56px;
+}
+
+/** Home folders ***************************************/
+.hddbox {
+	background-color: #3A404C;
+	border-radius: 10px;
+	margin : 15px;
+}
+.hddicon {
+	color: #81A1C1;
+	font-family: Iosevka Nerd Font;
+	font-size : 48px;
+	font-weight : normal;
+	margin : 25px 20px 25px 40px;
+}
+.hdd_label {
+	color: #E5E9F0;
+	font-size : 36px;
+	font-weight : bold;
+	margin : 0px 0px 0px 15px;
+}
+.fs_sep {
+	color: #2E3440;
+	font-size : 36px;
+	font-weight : bold;
+}
+
+.iconfolder1, .iconfolder2, .iconfolder3, .iconfolder4, .iconfolder5, .iconfolder6  {
+	font-family: Iosevka Nerd Font;
+	font-size : 32px;
+	font-weight : normal;
+	margin : 0px 0px 0px 75px;
+    transition: font-size 0.3s;
+}
+.iconfolder1 {
+	color: #BF616A;
+}
+.iconfolder2 {
+	color: #A3BE8C;
+}
+.iconfolder3 {
+	color: #EBCB8B;
+}
+.iconfolder4 {
+	color: #81A1C1;
+}
+.iconfolder5 {
+	color: #B48EAD;
+}
+.iconfolder6 {
+	color: #88C0D0;
+}
+
+.label_folder1, .label_folder2, .label_folder3, .label_folder4, .label_folder5, .label_folder6  {
+	font-size : 22px;
+	font-weight : normal;
+	margin : 0px 0px 0px 30px;
+    transition: font-size 0.3s;
+}
+.label_folder1 {
+	color: #BF616A;
+}
+.label_folder2 {
+	color: #A3BE8C;
+}
+.label_folder3 {
+	color: #EBCB8B;
+}
+.label_folder4 {
+	color: #81A1C1;
+}
+.label_folder5 {
+	color: #B48EAD;
+}
+.label_folder6 {
+	color: #88C0D0;
+}
+
+.iconfolder1:hover, .iconfolder2:hover, .iconfolder3:hover, .iconfolder4:hover, .iconfolder5:hover, .iconfolder6:hover {
+    font-size: 46px;
+}
+.label_folder1:hover, .label_folder2:hover, .label_folder3:hover, .label_folder4:hover, .label_folder5:hover, .label_folder6:hover {
+    font-size: 30px;
+}
+
+/** EOF *************************************************/

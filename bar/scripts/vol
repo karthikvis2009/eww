@@ -1,0 +1,22 @@
+#!/bin/bash
+
+mutedSource=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | awk '{print $3}')
+if [ "$mutedSource" = "[MUTED]" ]; then
+    sourceIcon="󰍭 "
+    sourceVolume=""
+else
+    sourceIcon="󰍬 "
+    sourceVolume=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | awk '{print $2}')
+fi
+
+mutedSink=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $3}')
+if [ "$mutedSink" = "[MUTED]" ]; then
+    sinkIcon="󰝟 "
+    sinkVolume=""
+else
+    sinkIcon="󰕾 "
+    sinkVolume=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2}')
+fi
+
+echo "" $yellow $sourceIcon $sourceVolume / $sinkIcon $sinkVolume $white ""
+

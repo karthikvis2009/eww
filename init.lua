@@ -1,5 +1,0 @@
-require('options')
-require('keymaps')
-require('plugins')
-require('filetypes')
--- require('config.openfoam')

@@ -1,0 +1,6 @@
+(defwidget keybindings []
+  (scroll :class "scroll" :hscroll "false" :vscroll "true"))
+
+(defwindow keybindings :stacking "fg" :focusable "false" :screen 1
+    :geometry (geometry :x 110 :y 150 :width 500 :height 700)
+    (keybindings))

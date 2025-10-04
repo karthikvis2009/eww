@@ -1,0 +1,31 @@
+#!/bin/bash
+
+if [ "$1" = "battery" ]; then
+    perc=$(acpi | awk '{print $NF}' | cut -d'%' -f1)
+    chargeStatus=$(cat /sys/class/power_supply/BAT0/status)
+    cs=0
+    icon=""
+
+    if [ "$chargeStatus" = "Charging" ]; then
+        icon="󰂄"
+        cs=1
+    elif [ "$chargeStatus" = "Not charging" ]; then
+        icon="󱈑"
+        cs=0
+    else
+        case $perc in
+            [0-9]) icon="󰁺";;
+            1[0-9]) icon="󰁻";;
+            2[0-9]) icon="󰁼";;
+            3[0-9]) icon="󰁽";;
+            4[0-9]) icon="󰁾";;
+            5[0-9]) icon="󰁿";;
+            6[0-9]) icon="󰂀";;
+            7[0-9]) icon="󰂁";;
+            8[0-9]) icon="󰂂";;
+            9[0-9]|100) icon="󰁹";;
+        esac
+        cs=0
+    fi
+    echo "[{\"perc\":"$perc", \"icon\":\"$icon\", \"chargeStatus\":\"$chargeStatus\"}]"
+fi

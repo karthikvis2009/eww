@@ -1,0 +1,196 @@
+* {
+    all: unset;
+    font-family: 'JetBrainsMono Nerd Font', monospace;
+    border-radius: 6px;
+}
+
+.bar-section-center {
+        /* background: rgba(123,122,212, 0.1); */
+        min-height: 24px;
+        padding: 0px 10px;
+        margin: 0px;
+}
+
+/* .workspaces-widget { */
+/*   background: transparent; */
+/*   font-size: 16px; */
+/*   padding: 0px 10px; */
+/*   border-radius: 6px; */
+/*   min-width: 200px; */
+/*   min-height: 24px; */
+/*   /1* box-shadow: 0 2px 10px rgba(0,0,0,0.40); *1/ */
+/* } */
+
+.workspace-entry {
+  color: rgba(123, 123, 123, 0.2);
+  /* padding: 0px 10px; */
+  /* margin: 0 2px; */
+
+  border-radius: 6px;
+  transition: background 0.5s, color 0.5s;
+  background: transparent;
+
+  &.current {
+      color: #e1e3e6;
+      /* font-weight: bold; */
+      border: 2px solid #82aaff;
+      background: rgba(12, 75, 56, 0.5);
+      /* transition: font-weight 0.5s, border 0.5s, background 0.5s; */
+  }
+
+  &.urgent {
+      color: #fff;
+      animation: urgent-pulse 0.6s alternate infinite;
+  }
+  
+  &.occupied {
+      color: rgba(45, 128, 86, 0.9);
+  }
+
+  &.empty {
+      color: #6b7089;
+      opacity: 0.7;
+  }
+}
+
+
+@keyframes urgent-pulse {
+  0%   { box-shadow: 0 0 1px #ff5c57; }
+  100% { box-shadow: 0 0 2px #ff5c57; }
+}
+
+@keyframes crit-bat {
+    0% { color: #6b7089; }
+    100% { color: #ff5c57; }
+}
+
+
+
+/* Status box*/
+/* .statusbox{ */
+/*   color: #6b7089; */
+/*   font-size: 16px; */
+/*   /1* margin: 0px 2px 0px 2px; *1/ */
+/*   margin: 0px 5px 0px 0px; */
+/*   padding: 5px 10px 5px 10px; */
+/*   border-radius: 6px; */
+/*   background: rgba(123,122,212, 0.1); */
+/* } */
+
+/* .batterybutton */
+/* { */
+/*       color: #6b7089; */
+/*       font-size: 16px; */
+/*       /1* margin: 0px 5px 0px 0px; *1/ */
+/*       padding: 0px 10px 0px 10px; */
+/*       border-radius: 6px; */
+/*       background: rgba(123,122,212, 0.1); */
+/* } */
+
+/* Volume box*/
+.boxes{
+  color: #6b7089;
+  font-size: 16px;
+  /* margin: 0px 2px 0px 2px; */
+  margin: 0px 5px 0px 0px;
+  padding: 5px 10px 5px 10px;
+  border-radius: 6px;
+  background: rgba(123,122,212, 0.1);
+}
+
+
+.iconbutton{
+      color: #6b7089;
+      font-size: 18px;
+      font-family: 'JetBrainsMono Nerd Font', monospace;
+      /* margin: 0px 2px 0px 2px; */
+      margin: 0px 5px 0px 0px;
+      padding: 0px 10px 0px 10px;
+      border-radius: 6px;
+      background: rgba(123,122,212, 0.1);
+      
+      &.charging{
+          background: rgba(29, 152, 110, 0.2);
+      }
+
+      &.good{
+          color: rgba(45, 128, 86, 0.9);
+      }
+
+      &.ok{
+          color: rgba(160, 12, 86, 0.5);
+      }
+
+      &.low{
+          color: rgba(160, 72, 186, 0.5);
+      }
+
+      &.critical {
+          animation: crit-bat 0.6s alternate infinite;
+      }
+}
+
+/* .sinkbutton{ */
+/*       color: #6b7089; */
+/*       font-size: 16px; */
+/*       /1* margin: 0px 2px 0px 2px; *1/ */
+/*       margin: 0px 5px 0px 0px; */
+/*       padding: 0px 10px 0px 10px; */
+/*       border-radius: 6px; */
+/*       background: rgba(123,122,212, 0.1); */
+/* } */
+
+/* .sourcebutton{ */
+/*       color: #6b7089; */
+/*       font-size: 16px; */
+/*       /1* margin: 0px 2px 0px 2px; *1/ */
+/*       margin: 0px 5px 0px 0px; */
+/*       padding: 0px 10px 0px 10px; */
+/*       border-radius: 6px; */
+/*       background: rgba(123,122,212, 0.1); */
+/* } */
+
+/* /1* Connectivity box *1/ */
+/* .connbox{ */
+/*   color: #6b7089; */
+/*   font-size: 16px; */
+/*   /1* margin: 0px 2px 0px 2px; *1/ */
+/*   margin: 0px 5px 0px 0px; */
+/*   padding: 5px 10px 5px 10px; */
+/*   border-radius: 6px; */
+/*   background: rgba(123,122,212, 0.1); */
+/* } */
+
+/* .wifibutton{ */
+/*       color: #6b7089; */
+/*       font-size: 16px; */
+/*       /1* margin: 0px 2px 0px 2px; *1/ */
+/*       margin: 0px 5px 0px 0px; */
+/*       padding: 0px 10px 0px 10px; */
+/*       border-radius: 6px; */
+/*       background: rgba(123,122,212, 0.1); */
+/* } */
+
+/* .bluetoothbutton{ */
+/*       color: #6b7089; */
+/*       font-size: 16px; */
+/*       /1* margin: 0px 2px 0px 2px; *1/ */
+/*       margin: 0px 5px 0px 0px; */
+/*       padding: 0px 10px 0px 10px; */
+/*       border-radius: 6px; */
+/*       background: rgba(123,122,212, 0.1); */
+/* } */
+
+
+
+.iconbutton:hover{
+  background: rgba(123,122,212, 0.2);
+  transition: background 0.5s;
+}
+.time-hour-min:hover {
+  background: rgba(123,122,212, 0.2);
+  transition: background 0.5s;
+}
+.off{
+    background: transparent;
+}

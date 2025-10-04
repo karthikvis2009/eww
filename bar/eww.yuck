@@ -1,0 +1,110 @@
+; Workspace
+(deflisten workspaces :initial "[]" "bash ~/.config/eww/bar/scripts/get-workspaces")
+(deflisten current_workspace :initial "..." "bash ~/.config/eww/bar/scripts/get-active-workspace")
+(deflisten urgent_workspace :initial "..." "bash ~/.config/eww/bar/scripts/get-urgent-workspaces")
+(defwidget _workspaces []
+  (eventbox :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}" :class "workspaces-widget"
+    (box :space-evenly false
+      (label :text "${workspaces}${current_workspace}${urgent_workspace}" :visible false)
+      (for workspace in workspaces
+        (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}"
+          (box :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""} ${workspace.id == urgent_workspace ? "urgent" : ""} ${workspace.windows > 0 ? "occupied" : "empty" } boxes"
+            (label :text "${workspace.id}")
+          )
+        )
+      )
+    )
+  )
+)
+;; Status ;;
+(defpoll chargeStatus :interval "5s" "cat /sys/class/power_supply/BAT0/status")
+(defpoll perc :interval "5s" "cat /sys/class/power_supply/BAT0/capacity")
+(defwidget _status []
+  (box  :orientation "horizontal"
+        :class "statusbox boxes"
+        :valign "center"
+    (button :onclick "scripts/status memory"
+            :class "memorybutton iconbutton" "")
+    (button :onclick "scripts/status cpu"
+            :class "cpubutton iconbutton" "")
+    (eventbox :onclick "scripts/status battery"
+        (box :class "batterybutton iconbutton ${chargeStatus == "Charging" ? "charging" : ""} ${perc > 70 ? "good" : perc > 30 ? "ok" : perc > 10 ? "low" : "critical"}"
+          (label :text "${chargeStatus == "Not charging" ? "󱈑" : 
+                          chargeStatus == "Charging" ? "󰂄" : 
+                            perc > 90 ? "󰁹" :
+                            perc > 80 ? "󰂂":
+                            perc > 70 ? "󰂁":
+                            perc > 60 ? "󰂀":
+                            perc > 50 ? "󰁿":
+                            perc > 40 ? "󰁾":
+                            perc > 30 ? "󰁽":
+                            perc > 20 ? "󰁼":
+                            perc > 10 ? "󰁻": "󰁺"
+                                             }")))
+    )
+  )
+
+
+;; Connectivity ;;
+(defpoll blue :interval "10s" "scripts/bluetooth")
+(defwidget _connectivity []
+  (box  :orientation "horizontal"
+        :class "connbox boxes"
+        :valign "center"
+    (button :onclick "scripts/connectivity wifi"
+            :class "wifibutton iconbutton" "󰤨")
+    (eventbox :onclick "rfkill toggle bluetooth"
+        (box  :class "bluetoothbutton iconbutton ${blue.power == "no" ? "off" : ""}"
+              (label :text "${blue.power == "yes" ? "󰂯" : "󰂯"}")
+          )))
+ )
+
+
+;; Volume ;;
+(defwidget _volume []
+  (box  :orientation "horizontal"
+        :class "volumebox boxes"
+        :valign "center"
+    (button :onclick "scripts/vol source toggle"
+            :onmiddleclick "pavucontrol"
+            :class "sourcebutton iconbutton" "󰍭")
+    (button :onclick "scripts/vol sink toggle"
+            :onmiddleclick "pavucontrol"
+            :class "sinkbutton iconbutton" "󰕾")
+    )
+)
+
+;; Clock Widget ;;
+(defwidget _clock []
+	(button	:onclick "scripts/popup calendar"	
+			:class "time-hour-min boxes" "${hour}:${min}"))
+(defpoll hour	:interval "1s"	"date '+%H'")
+(defpoll min	:interval "1s"	"date '+%M'")
+
+(defwindow bar
+  :monitor 0
+  :geometry (geometry :x "1%" :y "0.8%" :width "98%" :height "24px" :anchor "top center")
+  :stacking "fg"
+  :reserve (struts :distance "24px" :side "top")
+  :windowtype "dock"
+  :wm-ignore true
+  :exclusive true
+  (box :orientation "horizontal" :halign "space-between" :valign "center"
+    ;; Left section for future widgets
+    (box :halign "start" :valign "center" :class "bar-section-left"
+      ;;; Add left widgets here later
+      (_volume)
+      (_connectivity)
+    )
+    ;; Center section for workspaces
+    (box :halign "center" :valign "center" :class "bar-section-center"
+      (_workspaces)
+    )
+    ;; Right section for clock and others
+    (box  :halign "end" :valign "center" :space-evenly "false" :class "bar-section-right"
+      (_status)
+      (_clock)
+      ;;; Add other right widgets here later
+    )
+  )
+)

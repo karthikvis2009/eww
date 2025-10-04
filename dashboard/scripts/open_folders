@@ -1,0 +1,21 @@
+#!/bin/bash
+
+
+if [[ "$2" == "th" ]]; then
+    cmd="thunar"
+elif [[ "$2" == "kt" ]]; then
+    cmd="kitty"
+else
+    cmd=""
+fi
+
+
+case "$1" in
+    "--dl") eww close-all && $cmd ~/Downloads & ;;
+    "--docs") eww close-all && $cmd ~/Documents & ;;
+    "--ofcases") eww close-all && $cmd ~/Additional/CFDCases/ & ;;
+    "--pics") eww close-all && $cmd ~/Pictures & ;;
+    "--cfg") eww close-all && $cmd ~/.config & ;;
+    "--web") eww close-all && $cmd ~/Documents/website/ & ;;
+    *) echo "Invalid option"; exit 1 ;;
+esac

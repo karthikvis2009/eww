@@ -1,0 +1,15 @@
+#!/bin/bash
+
+## Open links in brave
+cmd="brave --new-window"
+
+
+case "$1" in
+    "--gmail") eww close-all && ${cmd} "https://mail.google.com";;
+    "--gh") eww close-all && ${cmd} "https://github.com";;
+    "--cg") eww close-all && xdotool key Super+g;;
+    "--gs") eww close-all && ${cmd} "https://scholar.google.com";;
+    "--yt") eww close-all && ${cmd} "https://youtube.com";;
+    "--arch") eww close-all && ${cmd} "https://wiki.archlinux.org";;
+    *) echo "Invalid option"; exit 1 ;;
+esac

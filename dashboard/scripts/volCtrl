@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [[ "$1" == "--vol" ]]; then
+    ID="@DEFAULT_AUDIO_SINK@"
+elif [[ "$1" == "--mic" ]]; then
+    ID="@DEFAULT_AUDIO_SOURCE@"
+else
+    ID=""
+fi
+
+if [[ "$2" == "mute" ]]; then
+    wpctl set-mute $ID toggle && kill -SIGRTMIN+1 $(pidof dwmblocks)
+elif [[ "$2" == "get" ]]; then
+    echo "$(awk "BEGIN {print ($(wpctl get-volume $ID | awk '{print $2}') / 1.4) * 100}")"
+elif [[ "$2" == "update" ]]; then
+    echo "$(awk "BEGIN {print ($(wpctl get-volume $ID | awk '{print $2}') / 1.4) * 100}")"
+
+else
+    val=$(awk "BEGIN {print ($2 / 100) * 1.4}")
+    wpctl set-volume $ID $val && kill -SIGRTMIN+1 $(pidof dwmblocks)
+fi
+
+
