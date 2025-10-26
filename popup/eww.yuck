@@ -1,0 +1,81 @@
+
+;; Variables
+(defvar eww "/sbin/eww -c $HOME/.config/eww/popup")
+(defvar selected-ssid "")
+(defvar wifi-connected "")
+
+;; Poll networks
+(defpoll wifi-networks :interval "10s" 
+  "nmcli -t -f SSID dev wifi | awk -F: 'NF && $1!=\"\" {print $1}' | jq -R -s -c 'split(\"\\n\") | map(select(. != \"\"))'"
+)
+
+(defpoll currentWifi :interval "2s" :initial "--" "nmcli -t -f ACTIVE,SSID dev wifi | grep yes | cut -d: -f2 | xargs")
+(defvar revealConnect "false")
+(defvar hoveredSSID "")
+(defvar revealPass "false")
+(defvar wifiPass "")
+(defvar isfocusable "true")
+;; WiFi Main Menu
+(defwindow wifiMenu
+  :monitor 0
+  :geometry (geometry :x "0.5%" :y "0.1%" :width "20%" :anchor "top left")
+  :stacking "overlay"
+  :exclusive false
+  :vexpand false
+  (box    :orientation "v"
+          :space-evenly "false"
+    (label :text "Available WiFi Networks" :class "title")
+    (scroll :vscroll "true"
+            :style "min-height:260px;"
+            :halign "fill"
+            :vexpand "false"
+      (box  :orientation "v" 
+            :spacing 5
+            :class "wifiListBox"
+            :halign "fill"
+        (for net in wifi-networks
+            (eventbox :class "wifiListItem ${net == currentWifi ? "connected" : ""}"
+                      :onhover "${eww} update hoveredSSID='${net}'"
+                      :onhoverlost "${eww} update hoveredSSID=''"
+                      :halign "fill"
+              (centerbox  :orientation "horizontal"
+                          :style "min-width: 50px;"
+                          :vexpand "false"
+                  (label    :text "${net}"
+                            :halign "start"
+                            :vexpand "false")
+                  (box      :halign "center"
+                            :vexpand "false")
+                  (revealer :transition "slideleft"
+                            :reveal "${hoveredSSID == net}"
+                            :duration "500ms"
+                            :halign "end"
+                            :vexpand "false"
+                            :style "padding: 10px;"
+                    (eventbox :class "wifiConnectButton" 
+                              :onclick "./scripts/wifi saved ${hoveredSSID}"
+                              :vexpand "false"
+                        (label  :text "󱘖"))
+                  )
+               )
+            )
+        )
+      )
+    )
+    )
+)
+
+(defwindow wifiPass
+  :monitor 0
+  :geometry (geometry :x "0.5%" :y "27%" :width "20%" :anchor "top left")
+  :stacking "overlay"
+  :exclusive false
+  :vexpand false
+  :focusable true
+  :namespace "wifipass"
+  (input  :value "${wifiPass}"
+          :onaccept "./scripts/wifi attempt ${hoveredSSID} {}"
+          :password "true"
+  )
+
+)

@@ -1,22 +1,43 @@
 #!/bin/bash
 
-mutedSource=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | awk '{print $3}')
-if [ "$mutedSource" = "[MUTED]" ]; then
-    sourceIcon="󰍭 "
-    sourceVolume=""
-else
-    sourceIcon="󰍬 "
-    sourceVolume=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | awk '{print $2}')
+sourceMute="yes"
+sinkMute="yes"
+
+get_status(){
+
+    mutedSource=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | awk '{print $3}')
+    sourceMute=""
+    sinkMute=""
+    if [ "$mutedSource" = "[MUTED]" ]; then
+        sourceIcon="󰍭 "
+        sourceVolume=0.0
+        sourceMute="yes"
+    else
+        sourceIcon="󰍬 "
+        sourceVolume=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | awk '{print $2}')
+        sourceMute="no"
+    fi
+
+    mutedSink=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $3}')
+    if [ "$mutedSink" = "[MUTED]" ]; then
+        sinkIcon="󰝟 "
+        sinkVolume=0.0
+        sinkMute="yes"
+    else
+        sinkIcon="󰕾 "
+        sinkVolume=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2}')
+        sinkMute="no"
+    fi
+
+    echo "{\"source\" : {\"muted\" : "$sourceMute", \"volume\" : "$sourceVolume"} , \"sink\" : {\"muted\" : "$sinkMute", \"volume\" : "$sinkVolume"}}"
+}
+
+if [ "$1" == "source" ]; then
+    as="@DEFUALT_AUDIO_SOURCE@"
+elif [ "$1" == "sink" ]; then
+    as="@DEFUALT_AUDIO_SINK@"
 fi
 
-mutedSink=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $3}')
-if [ "$mutedSink" = "[MUTED]" ]; then
-    sinkIcon="󰝟 "
-    sinkVolume=""
-else
-    sinkIcon="󰕾 "
-    sinkVolume=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2}')
+if [ "$2" == "toggle" ]; then
 fi
-
-echo "" $yellow $sourceIcon $sourceVolume / $sinkIcon $sinkVolume $white ""
 

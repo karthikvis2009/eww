@@ -1,0 +1,237 @@
+(defvar eww "/sbin/eww -c $HOME/.config/eww/bar")
+
+
+; Workspace
+(deflisten workspaces :initial "[]" "bash ~/.config/eww/bar/scripts/get-workspaces")
+(deflisten current_workspace :initial "..." "bash ~/.config/eww/bar/scripts/get-active-workspace")
+(deflisten urgent_workspace :initial "..." "bash ~/.config/eww/bar/scripts/get-urgent-workspaces")
+(defwidget _workspaces []
+  (eventbox :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}" :class "workspaces-widget"
+    (box :space-evenly false
+      (label :text "${workspaces}${current_workspace}${urgent_workspace}" :visible false)
+      (for workspace in workspaces
+        (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}"
+          (box :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""} ${workspace.id == urgent_workspace ? "urgent" : ""} ${workspace.windows > 0 ? "occupied" : "empty" } boxes"
+            (label :text "${workspace.id}")
+          )
+        )
+      )
+    )
+  )
+)
+;; Status ;;
+; (defpoll chargeStatus :interval "5s" "cat /sys/class/power_supply/BAT0/status")
+; (defpoll perc :interval "5s" "cat /sys/class/power_supply/BAT0/capacity")
+(defpoll cpuGov :interval "5s" "cpupower frequency-info | grep \"The governor\" | awk '{print $3}' | tr -d '\"'")
+(defwidget _status []
+  (box  :orientation "horizontal"
+        :class "statusbox boxes"
+        :valign "center"
+        :space-evenly "false"
+    ; (button :onclick "scripts/status memory"
+    ;         :class "memorybutton iconbutton" "")
+
+
+  (eventbox :onclick "kitty --title btop -o initial_window_width=120 -o initial_window_height=40 -e btop &"
+              ; :class "iconbutton membutton"
+        ; (image  :path "./iconImages/memory.png")
+        (circular-progress    :value "${EWW_RAM.used_mem_perc}"
+                              :start-at -90
+                              :width 26
+                              :height 26
+                              :thickness 4
+                              :tooltip "${EWW_RAM.used_mem_perc}"
+              ; :class "iconbutton membutton"
+                              :clockwise "true"
+                              :class "memprog ${EWW_RAM.used_mem_perc < 33 ? "low" : 
+                                                EWW_RAM.used_mem_perc < 66 ? "med" :
+                                                "high"}")
+        )
+
+
+    ;; CPU Button, click to toggle power profile, rightclick to open btop;;
+    (eventbox :onclick "scripts/cpu ${cpuGov == "performance" ? "powersave" : "performance"}"
+              :space-evenly "false" :valign "center"
+        (box :class "cpubutton iconbutton" :space-evenly "false" :valign "center" :halign "center"
+        (image :path "${cpuGov == "powersave" ? "./iconImages/cpuPowersave.png" : "./iconImages/cpuPerformance.png"}")
+        (progress :class "cpuprog" :value {round(EWW_CPU.avg, 1)} :orientation "horizontal" :valign "center" :halign "center"))
+        ; (progress :class "cpuprog" :value ${round(EWW_CPU.avg, 1)} :orientation: "horizontal"))
+        )
+    (eventbox :onclick "scripts/battery"
+        (box :class "batterybutton iconbutton ${EWW_BATTERY.BAT0.status == "Charging" ? "charging" : ""} ${EWW_BATTERY.BAT0.capacity > 70 ? "good" : EWW_BATTERY.BAT0.capacity > 30 ? "ok" : EWW_BATTERY.BAT0.capacity > 10 ? "low" : "critical"}"
+              :tooltip "${EWW_BATTERY.BAT0.capacity} %"
+          (image :path "${EWW_BATTERY.BAT0.status == "Full" ? "./iconImages/battery7.png" :
+                          EWW_BATTERY.BAT0.status == "Charging" ? "./iconImages/battery6.png":
+                          EWW_BATTERY.BAT0.capacity > 80 ? "./iconImages/battery5.png":
+                          EWW_BATTERY.BAT0.capacity > 60 ? "./iconImages/battery4.png":
+                          EWW_BATTERY.BAT0.capacity > 40 ? "./iconImages/battery3.png":
+                          EWW_BATTERY.BAT0.capacity > 20 ? "./iconImages/battery2.png": 
+                          EWW_BATTERY.BAT0.capacity > 5 ? "./iconImages/battery1.png": "./iconImages/battery0.png"
+            }")
+          ))
+    )
+  )
+
+
+;; Connectivity ;;
+; (defpoll eth :interval "1s" "nmcli -f GENERAL.CONNECTION,WIRED-PROPERTIES.CARRIER,GENERAL.STATE,GENERAL.DEVICE device show enp1s0 | head -n 1 | awk '{print $NF}'")
+(defpoll wifi :interval "1s" "nmcli -f GENERAL.CONNECTION,WIRED-PROPERTIES.CARRIER,GENERAL.STATE,GENERAL.DEVICE device show wlp2s0 | head -n 1 | awk '{print $NF}'")
+(defpoll blue :interval "1s" "scripts/bluetooth")
+(defwidget _connectivity []
+  (box  :orientation "horizontal"
+        :class "connbox boxes"
+        :valign "center"
+    (eventbox :onclick "kitty --title nmtui -e nmtui &"
+              :tooltip "${wifi == "--" ? "Disconnected" : "Connected to ${wifi}"}"
+        (image :path "./iconImages/wifiTest.png"))
+    (eventbox :onclick "scripts/bluetooth toggle"
+              ; :onrightclick "blueman-manager"
+              :onrightclick "blueman-manager 2>/tmp/blueman-error.log"
+        (box  :class "bluetoothbutton iconbutton ${blue.power == "" ? "off" : "on"}"
+              (image  :path "${blue.power ==  "" ? "./iconImages/blueOff.png" :  blue.connected == "YES" ? "./iconImages/blueOn.png" : "./iconImages/blueDiscon.png"}")
+          )))
+ )
+
+;; Volume ;;
+
+; (defvar volSlider false)
+; (defwidget _volume []
+;     (box      :class "boxes"
+;               :orientation "horizontal"
+;               :space-evenly "false"
+;       (eventbox :onclick "scripts/vol toggle source"
+;               :orientation "horizontal"
+;               :space-evenly "false"
+;               :class "iconbutton sourcebutton"
+;               (image :path "./iconImages/micOn"))
+; 	(eventbox :onhover "${eww} update volSlider=true" 		
+; 			  :onhoverlost "${eww} update volSlider=false"
+; 	(box      :orientation "horizontal" 	  
+; 			  :space-evenly "false" 
+;               :class "boxes"
+
+;     (button   :onclick "scripts/popup audio"   :class "volume-icon" "V")
+
+; 	(revealer :transition "slideright" 
+; 			  :reveal volSlider
+; 			  :duration "550ms"
+; 	(scale    :class "volbar" 	  
+; 			  :value 50
+; 			  :orientation "horizontal"      
+; 			  :flipped false 
+; 			  :tooltip "Volume: 31%" 
+; 			  :max 101 
+; 			  :min 0 
+; 			  :onchange "amixer -D pulse sset Master {}%" )))
+; 	)))
+              ; (image :path "./iconImages/micOff")))))
+
+(defvar volSlider false)
+; (defpoll current-vol :interval "1s" "wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $NF}'")
+(defpoll current-vol :interval "1s" "wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($NF*100)}'")
+(defpoll sinkMute :interval "1s" "wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $NF}'")
+(defpoll sourceMute :interval "1s" "wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | awk '{print $NF}'")
+
+(defwidget _volume []
+  (box  :orientation "horizontal"
+        ; :class "volumebox boxes"
+        :valign "center"
+        :space-evenly "false"
+        :halign "center"
+        :class "boxes"
+    ; Mic toggle button
+    (eventbox    :onclick "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+                 :onrightclick "pavucontrol 2>/tmp/pavucontrol_error.log"
+                 :class "iconbutton"
+      (image     :path "${sourceMute == "[MUTED]" ? "./iconImages/micOff.png" : "./iconImages/micOn.png"}"
+                 :style "margin: 0px 10px;")
+      )
+    ;Speaker button + slider
+    (box      :valign "center"
+              :style "padding: 0px 0px 0px 5px;"
+              :space-evenly "false"
+    (eventbox    :onclick "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+                 :onhover "${eww} update volSlider=true"
+                 :onhoverlost "${eww} update volSlider=false"
+                 :onrightclick "pavucontrol 2>/tmp/pavucontrol_error.log"
+                 ; :class "iconbutton"
+
+      (box       :valign "center"
+                 :space-evenly "false"
+                 :class "boxes"
+      (image     :path "${sinkMute == "[MUTED]" ? "./iconImages/speakerOff.png" : "./iconImages/speakerOn.png"}")
+
+	(revealer :transition "slideright" 
+			  :reveal volSlider
+			  :duration "550ms"
+              :class "volrevealer"
+	(scale    :class "volbar" 	  
+              ; :value (int (* current-vol 100))
+              :value "${current-vol}"
+              :tooltip "${current-vol}"
+			  :orientation "horizontal"      
+			  :flipped false 
+			  :tooltip "Volume: ${current-vol}%" 
+			  :max 141
+			  :min -1 
+			  :onchange "wpctl set-volume @DEFAULT_AUDIO_SINK@ {}%" ))))
+      )
+
+
+    ; (eventbox :onclick "scripts/vol source toggle"
+    ;           :onrightclick "pavucontrol"
+    ;           :onhover "${eww} update micSlider=true"
+    ;           :onhoverlost "${eww} update micSlider=false"
+    ;   (image  :path "./iconImages/micOff.png")))
+    ; (scale    :min 0
+    ;           :max 140
+    ;           :value 50
+    ;           :class "sourceScale")
+    ;   )
+
+    )
+)
+
+;; Date Widget ;;
+(defwidget _date []
+	(button	:onclick "scripts/popup calendar"	
+			:class "date boxes" "${date} (${day})"))
+(defpoll date	:interval "1s"	"date '+%b %d'")
+(defpoll day	:interval "1s"	"date '+%a'")
+
+
+;; Clock Widget ;;
+(defwidget _clock []
+	(button	:onclick "scripts/popup calendar"	
+			:class "time-hour-min boxes" "${hour}:${min}"))
+(defpoll hour	:interval "1s"	"date '+%H'")
+(defpoll min	:interval "1s"	"date '+%M'")
+
+(defwindow bar
+  :monitor 0
+  :geometry (geometry :x "1%" :y "0.8%" :width "98%" :height "24px" :anchor "top center")
+  :stacking "fg"
+  :reserve (struts :distance "24px" :side "top")
+  :windowtype "dock"
+  :wm-ignore true
+  :exclusive true
+  (box :orientation "horizontal" :halign "fill" :valign "center"
+    ;; Left section for future widgets
+    (box :halign "start" :valign "center" :space-evenly "false" :class "bar-section-left"
+      ;;; Add left widgets here later
+      (_volume)
+      (_connectivity)
+    )
+    ;; Center section for workspaces
+    (box :halign "center" :valign "center" :class "bar-section-center"
+      (_workspaces)
+    )
+    ;; Right section for clock and others
+    (box  :halign "end" :valign "center" :space-evenly "false" :class "bar-section-right"
+      (_status)
+      (_date)
+      (_clock)
+      ;;; Add other right widgets here later
+    )
+  )
+)

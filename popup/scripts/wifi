@@ -1,0 +1,39 @@
+#!/bin/bash
+
+CFG="$HOME/.config/eww/popup/"
+EWW=`which eww`
+
+
+
+if [ "$1" = "saved" ]; then
+    nmcli dev wifi connect "$2"
+    if [ $? -eq 0 ]; then
+        hyprctl notify 5 1000 0 "Connected!"
+    else
+        ${EWW} -c ${CFG} open wifiPass
+        # hyprctl notify 3 1000 0 "Failed!"
+    fi
+elif [ "$1" = "attempt" ]; then
+    nmcli dev wifi connect "$2" password "$3"
+    if [ $? -eq 0 ]; then
+        hyprctl notify 5 1000 0 "Connected!"
+        # ${EWW} -c ${CFG} open wifiPass
+    else
+        nmcli connection modify "$2" wifi-sec.psk "$3"
+        if [ $? -eq 0 ]; then
+            hyprctl notify 5 1000 0 "Changed password successfully!"
+        else
+            hyprctl notify 3 1000 0 "Failed to change password!"
+        fi
+
+        nmcli dev wifi connect "$2"
+        if [ $? -eq 0 ]; then
+            hyprctl notify 5 1000 0 "Connected!"
+            ${EWW} -c ${CFG} open wifiPass
+        else
+            hyprctl notify 3 1000 0 "Failed!"
+        fi
+    fi
+elif [ "$1" = "test" ]; then
+    notify-send '"$2"'
+fi

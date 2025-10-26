@@ -1,40 +1,41 @@
+
+/* Variables */
+
+/* $def_color: rgba(107, 112, 137, 1.0); */
+$def_color: rgba(255, 255, 255, 0.5);
+/* $bg_color: rgba(0, 0, 0, 0.8); */
+$bg_color: transparent;
+/* $bg_color_inner: transparent; */
+$bg_color_inner: rgba(0, 0, 0, 0.1);
+$purple_color: rgba(90, 23, 145, 1.0);
+$yellow_color: rgba(137, 165, 24, 0.9);
+$green_color: rgba(3, 168, 94, 0.9);
+$red_color: rgba(216, 54, 36, 0.9);
+$blue_color: rgba(18, 48, 140, 0.9);
+$orange_color: rgba(219, 119, 26, 0.9);
+$grey_color: rgba(123, 122, 212, 0.1);
+$cyan_color: rgba(130, 170, 255);
+
+
 * {
     all: unset;
-    font-family: 'JetBrainsMono Nerd Font', monospace;
+    /* font-family: 'JetBrainsMono Nerd Font', monospace; */
+    font-family: 'JetBrainsMono Nerd Font Propo';
+    font-size: 16px;
     border-radius: 6px;
+    background: transparent;
+    /* background: $bg_color; */
 }
 
-.bar-section-center {
-        /* background: rgba(123,122,212, 0.1); */
-        min-height: 24px;
-        padding: 0px 10px;
-        margin: 0px;
-}
-
-/* .workspaces-widget { */
-/*   background: transparent; */
-/*   font-size: 16px; */
-/*   padding: 0px 10px; */
-/*   border-radius: 6px; */
-/*   min-width: 200px; */
-/*   min-height: 24px; */
-/*   /1* box-shadow: 0 2px 10px rgba(0,0,0,0.40); *1/ */
-/* } */
 
 .workspace-entry {
-  color: rgba(123, 123, 123, 0.2);
-  /* padding: 0px 10px; */
-  /* margin: 0 2px; */
-
-  border-radius: 6px;
+  color: $def_color;
   transition: background 0.5s, color 0.5s;
-  background: transparent;
 
   &.current {
-      color: #e1e3e6;
       /* font-weight: bold; */
-      border: 2px solid #82aaff;
-      background: rgba(12, 75, 56, 0.5);
+      border: 1px solid $cyan_color;
+      background: rgba(12, 75, 56, 0.6);
       /* transition: font-weight 0.5s, border 0.5s, background 0.5s; */
   }
 
@@ -44,12 +45,13 @@
   }
   
   &.occupied {
-      color: rgba(45, 128, 86, 0.9);
+    color: $yellow_color;
   }
 
   &.empty {
-      color: #6b7089;
-      opacity: 0.7;
+      /* color: $def_color; */
+      color: $def_color;
+      /* opacity: 0.7; */
   }
 }
 
@@ -60,137 +62,192 @@
 }
 
 @keyframes crit-bat {
-    0% { color: #6b7089; }
+    0% { color: $def_color; }
     100% { color: #ff5c57; }
 }
 
 
-
-/* Status box*/
-/* .statusbox{ */
-/*   color: #6b7089; */
-/*   font-size: 16px; */
-/*   /1* margin: 0px 2px 0px 2px; *1/ */
-/*   margin: 0px 5px 0px 0px; */
-/*   padding: 5px 10px 5px 10px; */
-/*   border-radius: 6px; */
-/*   background: rgba(123,122,212, 0.1); */
-/* } */
-
-/* .batterybutton */
-/* { */
-/*       color: #6b7089; */
-/*       font-size: 16px; */
-/*       /1* margin: 0px 5px 0px 0px; *1/ */
-/*       padding: 0px 10px 0px 10px; */
-/*       border-radius: 6px; */
-/*       background: rgba(123,122,212, 0.1); */
-/* } */
+@keyframes charge-bat {
+    0% {color: $def_color;}
+    100% {color: #9ba1c4;}
+}
 
 /* Volume box*/
 .boxes{
-  color: #6b7089;
-  font-size: 16px;
-  /* margin: 0px 2px 0px 2px; */
+  color: $def_color;
   margin: 0px 5px 0px 0px;
-  padding: 5px 10px 5px 10px;
+  padding: 0px 10px 0px 10px;
   border-radius: 6px;
-  background: rgba(123,122,212, 0.1);
+  /* background: rgba(123,122,212, 0.1); */
+  background: $bg_color_inner;
+  /* background-color: transparent; */
 }
 
 
 .iconbutton{
-      color: #6b7089;
+      color: $def_color;
       font-size: 18px;
-      font-family: 'JetBrainsMono Nerd Font', monospace;
+      font-family: 'JetBrainsMono Nerd Font Propo';
       /* margin: 0px 2px 0px 2px; */
       margin: 0px 5px 0px 0px;
       padding: 0px 10px 0px 10px;
       border-radius: 6px;
-      background: rgba(123,122,212, 0.1);
+      /* background: rgba(123,122,212, 0.1); */
+      background: $bg_color_inner;
+      box-shadow: 0 0 3px $cyan_color;
       
       &.charging{
+          /* background: rgba(29, 152, 110, 0.2); */
+          animation: charge-bat 2s alternate infinite;
           background: rgba(29, 152, 110, 0.2);
       }
 
       &.good{
-          color: rgba(45, 128, 86, 0.9);
+          color: $green_color;
       }
 
       &.ok{
-          color: rgba(160, 12, 86, 0.5);
+          color: $yellow_color;
       }
 
       &.low{
-          color: rgba(160, 72, 186, 0.5);
+          color: $red_color;
       }
 
       &.critical {
           animation: crit-bat 0.6s alternate infinite;
       }
+
+  }
+
+.charging{
+  /* background: rgba(29, 152, 110, 0.2); */
+  animation: charge-bat 2s alternate infinite;
+  background: rgba(29, 152, 110, 0.2);
 }
 
-/* .sinkbutton{ */
-/*       color: #6b7089; */
-/*       font-size: 16px; */
-/*       /1* margin: 0px 2px 0px 2px; *1/ */
-/*       margin: 0px 5px 0px 0px; */
-/*       padding: 0px 10px 0px 10px; */
-/*       border-radius: 6px; */
-/*       background: rgba(123,122,212, 0.1); */
+.good{
+  color: $green_color;
+}
+
+.ok{
+  color: $yellow_color;
+}
+
+.low{
+  color: $red_color;
+}
+
+.critical {
+  animation: crit-bat 0.6s alternate infinite;
+}
+
+
+.powersave{
+      color: $green_color;
+      }
+
+.performance{
+      color: $orange_color;
+      }
+
+
+.cpuprog{
+    margin: 0px 0px 0px 5px;
+}
+.cpuprog, scale trough highlight {
+    color: #ffffff;
+	background-color: $def_color;
+    border-radius: 10px;
+}
+
+progress {
+	/* background-color: #b27730; */
+    background-color: $purple_color;
+    border-radius: 10px;
+}
+
+
+.volbar {
+    min-width: 150px;
+    /* margin: 10px 10px; */
+    margin: 10px;
+    border-radius: 10px;
+    min-height: 2px;
+    background-color: $def_color;
+}
+
+
+/* scale trough highlight { */
+/* 	background-color: #b27730; */
+/*     border-radius: 10px; */
 /* } */
 
-/* .sourcebutton{ */
-/*       color: #6b7089; */
-/*       font-size: 16px; */
-/*       /1* margin: 0px 2px 0px 2px; *1/ */
-/*       margin: 0px 5px 0px 0px; */
-/*       padding: 0px 10px 0px 10px; */
-/*       border-radius: 6px; */
-/*       background: rgba(123,122,212, 0.1); */
-/* } */
+.volbar, scale trough{
+    min-width: 150px;
+    border-radius: 10px;
+    min-height: 6px;
+    background-color: $def_color;
+}
 
-/* /1* Connectivity box *1/ */
-/* .connbox{ */
-/*   color: #6b7089; */
-/*   font-size: 16px; */
-/*   /1* margin: 0px 2px 0px 2px; *1/ */
-/*   margin: 0px 5px 0px 0px; */
-/*   padding: 5px 10px 5px 10px; */
-/*   border-radius: 6px; */
-/*   background: rgba(123,122,212, 0.1); */
-/* } */
+.volbar highlight{
+    background-color: $purple_color;
+    margin: 0px;
+}
 
-/* .wifibutton{ */
-/*       color: #6b7089; */
-/*       font-size: 16px; */
-/*       /1* margin: 0px 2px 0px 2px; *1/ */
-/*       margin: 0px 5px 0px 0px; */
-/*       padding: 0px 10px 0px 10px; */
-/*       border-radius: 6px; */
-/*       background: rgba(123,122,212, 0.1); */
-/* } */
 
-/* .bluetoothbutton{ */
-/*       color: #6b7089; */
-/*       font-size: 16px; */
-/*       /1* margin: 0px 2px 0px 2px; *1/ */
-/*       margin: 0px 5px 0px 0px; */
-/*       padding: 0px 10px 0px 10px; */
-/*       border-radius: 6px; */
-/*       background: rgba(123,122,212, 0.1); */
-/* } */
+slider{
+    all: unset;
+    border-radius: 10px;
+    min-height: 8px;
+    background-color: #a8a8a8;
+    /* box-shadow: 0 0 3px #4a2699; */
+    margin: -5px;
+}
 
+.mediaOn{
+    color: $yellow_color;
+}
+
+.mediaOff{
+    color: $def_color;
+}
+
+.blueConnected{
+    color: $blue_color;
+}
+
+.blueDisconnected{
+    color: $def_color;
+}
+
+.wifiConnected{
+    color: $green_color;
+}
+
+.wifiDisconnected{
+    color: $def_color;
+}
+
+.lowmem{
+    /* color: #00ff00; */
+    color: $green_color;
+}
+
+.medmem{
+    color: $yellow_color;
+}
+
+.highmem{
+    color: $red_color;
+}
 
 
 .iconbutton:hover{
-  background: rgba(123,122,212, 0.2);
-  transition: background 0.5s;
+  background: $grey_color;
+  transition: background 0.3s;
 }
 .time-hour-min:hover {
-  background: rgba(123,122,212, 0.2);
-  transition: background 0.5s;
-}
-.off{
-    background: transparent;
+  background: $grey_color;
+  transition: background 0.3s;
 }

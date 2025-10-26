@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+magick mic.png -fuzz 10% -fill "#$1" -opaque black -alpha on micTemp.png
+magick micTemp.png -resize 24x24 micOff.png

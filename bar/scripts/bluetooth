@@ -1,0 +1,30 @@
+#!/bin/bash
+get_status(){
+    BT_STATUS=$(bluetoothctl show | grep "Powered:" | awk '{print $2}') 
+    RF_STATUS=$(rfkill list bluetooth | grep "Soft" | awk '{print $NF}' | head -n 1)
+    devices=$(bluetoothctl devices | awk '{print $2}')
+    ALL_STATUS=""
+
+    connected="NO"
+    if [ "$BT_STATUS" = "yes" ] && [ "$RF_STATUS" = "no" ]; then
+        ALL_STATUS="yes"
+        for device in $devices; do
+            state=$(bluetoothctl info "$device" | grep "Connected:" | awk '{print $2}')
+            if [ "$state" = "yes" ]; then
+                connected="YES"
+                break
+            fi
+        done
+    fi
+
+    echo "{\"power\" : \"${ALL_STATUS}\", \"connected\" : \"${connected}\"}"
+}
+
+
+if [ "$1" == "toggle" ]; then
+    rfkill toggle bluetooth
+    eww --config ~/.config/eww/bar update blue="$get_status"
+    dunstify 'Bluetooth toggled'
+else
+    get_status
+fi

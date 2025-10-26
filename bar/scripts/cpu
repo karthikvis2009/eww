@@ -1,0 +1,19 @@
+#!/bin/bash
+
+gov="$1"
+
+sudo /sbin/cpupower -c all frequency-set -g "$gov"
+
+if [ $? -eq 0 ]; then
+    notify-send "CPU GOVERNOR" "$gov"
+else
+    notify-send "Error changing the cpu governor"
+fi
+
+if [ "$1" = "powersave" ]; then
+    ryzenadj-battery
+else
+    ryzenadj-ac
+fi
+
+eww --config ~/.config/eww/bar update cpuGov=$gov
